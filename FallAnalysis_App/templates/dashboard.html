@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Executive Dashboard (Compact){% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}"
+<div class="dash-container">
+    <div class="header-actions">
+        <h2 style="font-size: 16px; margin: 0; color: #1e293b;">Executive Overview</h2>
+        <div class="filter-group">
+            <button class="btn-filter {% if request.GET.period == 'day' %}active{% endif %}" onclick="filterData('day')">Day</button>
+            <button class="btn-filter {% if request.GET.period == 'week' %}active{% endif %}" onclick="filterData('week')">Week</button>
+            <button class="btn-filter {% if not request.GET.period or request.GET.period == 'month' %}active{% endif %}" onclick="filterData('month')">Month</button>
+            <button class="btn-filter {% if request.GET.period == 'year' %}active{% endif %}" onclick="filterData('year')">Year</button>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><h3>Total Incidents</h3><p>{{ total_incidents|default:0 }}</p></div>
+        <div class="stat" style="border-color: #f59e0b;"><h3>Residents</h3><p>{{ total_residents|default:0 }}</p></div>
+    </div>
+
+    <div class="main-grid">
+        <div class="card">
+            <h3>Trends</h3>
+            <div class="chart-container">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Types</h3>
+            <div class="chart-container">
+                <canvas id="pieChart2"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="full-width-grid">
+        <div class="card">
+            <h3>Location Distribution</h3>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Recent Activity</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Resident</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in recent_incidents %}
+                    <tr>
+                        <td><strong>{{ i.Resident.Resident_Name }}</strong></td>
+                        <td><span style="background: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-size: 10px;">{{ i.get_Incident_type_display }}</span></td>
+                        <td>{{ i.get_Incident_location_display }}</td>
+                        <td>{{ i.Incident_time|date:"d M y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" style="text-align:center; padding: 20px;">No incidents.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.dashboardData = {
+        lineLabels: {{ line_labels|safe }},
+        lineCounts: {{ line_counts|safe }},
+        barLabels: {{ bar_labels|safe }},
+        barCounts: {{ bar_counts|safe }},
+        pie2Labels: {{ pie2_labels|safe }},
+        pie2Counts: {{ pie2_counts|safe }},
+    };
+
+    function filterData(range) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('period', range);
+        window.location.href = url.href;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const data = window.dashboardData;
+        Chart.defaults.font.size = 10; // Smaller global chart font
+
+        function createChart(canvasId, type, labels, label, counts, colors, extraOptions = {}) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+            new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: counts,
+                        backgroundColor: colors,
+                        borderColor: type === 'line' ? '#4361ee' : '#fff',
+                        borderWidth: 1.5,
+                        tension: 0.3,
+                        pointRadius: 2,
+                        fill: type === 'line' ? { target: 'origin', above: 'rgba(67, 97, 238, 0.05)' } : false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: type === 'pie', position: 'bottom', labels: { boxWidth: 10 } } 
+                    },
+                    ...extraOptions
+                }
+            });
+        }
+
+        createChart("lineChart", "line", data.lineLabels, "Incidents", data.lineCounts, "#4361ee");
+        createChart("pieChart2", "pie", data.pie2Labels, "Types", data.pie2Counts, ['#4361ee', '#3f37c9', '#4895ef', '#4cc9f0', '#560bad']);
+        createChart("barChart", "bar", data.barLabels, "Loc", data.barCounts, '#f59e0b', {
+            scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+        });
+    });
+</script>
+{% endblock %}

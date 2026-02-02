@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- ====== Sidebar ====== -->
+    <aside class="sidebar">
+        <h2 class="logo">FallAI</h2>
+        <nav>
+            <ul>
+                <li><a href="{% url 'summary' %}">Home</a></li>
+                <li><a href="{% url 'data_entry' %}">Data Entry</a></li>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'resident_details' %}">Resident Details</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- ====== Main Section ====== -->
+    <div class="main">
+
+        <!-- Header -->
+        <header class="header">
+            <h1>{% block header %}Dashboard{% endblock %}</h1>
+        </header>
+
+        <!-- Page Content -->
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+
+       
+
+    </div> <!-- /.main -->
+</div> <!-- /.layout -->
+
+<!-- ====== Popup Notification ====== -->
+<div id="errorPopup" class="popup-overlay {% if not popup_message %}hidden{% endif %}">
+    <div class="popup-card">
+        <button class="close-btn" onclick="closePopup()">×</button>
+        <h2>{% if popup_message %}Notification{% else %}Invalid Input{% endif %}</h2>
+        <p class="muted" id="popupMessage">
+            {% if popup_message %}
+                {{ popup_message }}
+            {% else %}
+                Please fill all required fields properly.
+            {% endif %}
+        </p>
+        <div class="popup-actions">
+            <button class="btn-action" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+
+
+
+<!-- ====== JS ====== -->
+<script>
+    // Close popup
+    function closePopup() {
+        const popup = document.getElementById("errorPopup");
+        popup.classList.add("hidden");
+    }
+
+    // Auto-hide popup after 4 seconds
+    window.addEventListener("DOMContentLoaded", () => {
+        const popup = document.getElementById("errorPopup");
+        if (!popup.classList.contains("hidden")) {
+            setTimeout(() => popup.classList.add("hidden"), 4000);
+        }
+    });
+</script>
+
+</body>
+</html>

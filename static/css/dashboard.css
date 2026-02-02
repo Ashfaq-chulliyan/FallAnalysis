@@ -1,0 +1,198 @@
+/* ================= DASHBOARD ROOT ================= */
+.dash-container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 14px;
+    background: #f6faf8;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 13px;
+    color: #064e3b;
+}
+
+/* ================= HEADER ================= */
+.header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    background: #ffffff;
+    padding: 14px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.header-actions h2 {
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0;
+}
+
+/* ================= FILTER BUTTONS ================= */
+.filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-filter {
+    padding: 6px 14px;
+    border: 1px solid #d1fae5;
+    background: #ecfdf5;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    color: #065f46;
+    transition: all 0.2s ease;
+}
+
+.btn-filter:hover {
+    background: #d1fae5;
+}
+
+.btn-filter.active {
+    background: #16a34a;
+    color: #ffffff;
+    border-color: #16a34a;
+    box-shadow: 0 6px 14px rgba(22,163,74,0.35);
+}
+
+/* ================= STATS ================= */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.stat {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    border-left: 4px solid #16a34a;
+}
+
+.stat h3 {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.stat p {
+    font-size: 24px;
+    font-weight: 800;
+    margin-top: 6px;
+    color: #022c22;
+}
+
+/* ================= GRID ================= */
+.main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.full-width-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+/* ================= CARDS ================= */
+.card {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #064e3b;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ecfdf5;
+}
+
+/* ================= CHARTS ================= */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+}
+
+/* ================= TABLE ================= */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th {
+    background: #f0fdf4;
+    padding: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #065f46;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    font-size: 12px;
+    color: #475569;
+    border-bottom: 1px solid #ecfdf5;
+}
+
+tbody tr:hover {
+    background: #f6faf8;
+}
+
+/* ================= BADGES ================= */
+td span {
+    display: inline-block;
+    background: #ecfdf5;
+    color: #065f46;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chart-container {
+        height: 200px;
+    }
+}
+
+/* ================= LAYOUT FIX (FOOTER SAFE) ================= */
+.layout {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+}

@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Data Entry - Fall Analysis{% endblock %}
+{% block header %}Data Entry{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/data-entry.css' %}">
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="card alert success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if popup_message %}
+    <div class="card alert error">
+        {{ popup_message }}
+    </div>
+{% endif %}
+
+<div class="card">
+    <h3>Select Entry Type</h3>
+    <select id="entryType" class="input">
+        <option value="">-- Select Entry Type --</option>
+        <option value="resident">Resident Details</option>
+        <option value="health">Health Record</option>
+        <option value="incident">Incident Log</option>
+    </select>
+</div>
+
+<div id="residentForm" class="card hidden">
+    <h3>Add New Resident</h3>
+    <form method="POST" class="form-grid">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="resident">
+
+        <label>Name</label>
+        <input type="text" name="Resident_Name" class="input" required>
+
+        <label>Age</label>
+        <input type="number" name="Resident_Age" class="input" required>
+
+        <label>Resident ID (Manual ID)</label>
+        <input type="text" name="Resident_ID" class="input" required>
+
+        <label>Gender</label>
+        <select name="Resident_Gender" class="input" required>
+            <option value="">Select Gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+        </select>
+
+        <label>Date of Birth</label>
+        <input type="date" name="Resident_DateOfBirth" class="input">
+
+        <label>Admission Date</label>
+        <input type="date" name="Resident_AdmissionDate" class="input">
+
+        <label>Phone</label>
+        <input type="text" name="Resident_Phone" class="input">
+
+        <label>Guardian Name</label>
+        <input type="text" name="Resident_GuardianName" class="input">
+
+        <label>Guardian Phone</label>
+        <input type="text" name="Resident_GuardianPhone" class="input">
+
+        <div class="form-actions full">
+            <button type="submit" class="btn-action">Add Resident</button>
+        </div>
+    </form>
+</div>
+
+<div id="healthForm" class="card hidden">
+    <h3>Add Health Record</h3>
+    <form method="POST" class="form-grid">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="health">
+
+        <label>Select Resident</label>
+        <select name="Resident_ID" class="input" required>
+            <option value="">Select Resident</option>
+            {% for r in residents %}
+                <option value="{{ r.id }}">{{ r.Resident_Name }} (ID: {{ r.Resident_ID }})</option>
+            {% endfor %}
+        </select>
+
+        <label>Physical Condition</label>
+        <input type="text" name="Physical_condition" class="input">
+
+        <label>Medical History</label>
+        <input type="text" name="History" class="input">
+
+        <label>Medication</label>
+        <input type="text" name="Medication" class="input">
+
+        <label>Doctor Name</label>
+        <input type="text" name="Doctor_Name" class="input">
+
+        <label>Doctor Contact</label>
+        <input type="text" name="Doctor_Contact" class="input">
+
+        <label>Appointment Date</label>
+        <input type="datetime-local" name="Doctor_Appointment" class="input">
+
+        <div class="form-actions full">
+            <button type="submit" class="btn-action">Add Health Record</button>
+        </div>
+    </form>
+</div>
+
+<div id="incidentForm" class="card hidden">
+    <h3>Add Incident Log</h3>
+    <form method="POST" class="form-grid">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="incident">
+
+        <label>Select Resident</label>
+        <select name="Resident_ID" class="input" required>
+            <option value="">Select Resident</option>
+            {% for r in residents %}
+                <option value="{{ r.id }}">{{ r.Resident_Name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Incident Type</label>
+        <select name="Incident_type" class="input" required>
+            <option value="">-- Select Injury Type --</option>
+            {% for code, label in incident_choices %}
+                <option value="{{ code }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Time</label>
+        <input type="datetime-local" name="Incident_time" class="input">
+
+        <label>Location</label>
+        <select name="Incident_location" class="input" required>
+            <option value="">-- Select Location --</option>
+            {% for code, label in location_choices %}
+                <option value="{{ code }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Injury Level (Description)</label>
+        <input type="text" name="Injury_level" class="input" placeholder="e.g. Mild, Severe...">
+
+        <div class="form-actions full">
+            <button type="submit" class="btn-action danger">Add Incident</button>
+        </div>
+    </form>
+</div>
+
+<script>
+const entryType = document.getElementById("entryType");
+const residentForm = document.getElementById("residentForm");
+const healthForm = document.getElementById("healthForm");
+const incidentForm = document.getElementById("incidentForm");
+
+entryType.addEventListener("change", () => {
+    residentForm.classList.add("hidden");
+    healthForm.classList.add("hidden");
+    incidentForm.classList.add("hidden");
+
+    if (entryType.value === "resident") residentForm.classList.remove("hidden");
+    if (entryType.value === "health") healthForm.classList.remove("hidden");
+    if (entryType.value === "incident") incidentForm.classList.remove("hidden");
+});
+</script>
+
+{% endblock %}

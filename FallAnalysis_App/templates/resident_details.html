@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Resident Details{% endblock %}
+{% block header %}Resident Details{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/resident-details.css' %}">
+
+<div class="resident-card">
+
+    <h2 class="page-title">All Residents</h2>
+
+    <div class="resident-filters">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by Name, ID, or Guardian"
+            class="input search-input"
+        >
+
+        <select id="genderFilter" class="input gender-filter">
+            <option value="">All Genders</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+        </select>
+    </div>
+
+    {% if residents %}
+        <div class="table-wrapper">
+            <table id="residentTable" class="resident-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>DOB</th>
+                        <th>Admission</th>
+                        <th>Phone</th>
+                        <th>Guardian</th>
+                        <th>Latest Health Record</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for r in residents %}
+                    <tr>
+                        <td>{{ r.Resident_ID }}</td>
+                        <td>{{ r.Resident_Name }}</td>
+                        <td>{{ r.Resident_Age }}</td>
+                        <td>{{ r.get_Resident_Gender_display }}</td>
+                        <td>{{ r.Resident_DateOfBirth }}</td>
+                        <td>{{ r.Resident_AdmissionDate }}</td>
+                        <td>{{ r.Resident_Phone }}</td>
+                        <td>{{ r.Resident_GuardianName }}</td>
+
+                        <td class="health-cell">
+                            {% with latest_health=r.resident_health_set.last %}
+                                {% if latest_health %}
+                                    <strong>Dr. {{ latest_health.Doctor_Name }}</strong><br>
+                                    <span class="muted">Contact: {{ latest_health.Doctor_Contact }}</span><br>
+                                    <span class="muted">
+                                        Appt: {{ latest_health.Doctor_Appointment|date:"d M Y H:i" }}
+                                    </span>
+                                {% else %}
+                                    <span class="no-record">No health record</span>
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+
+                        <td>
+                            <a
+                                href="{% url 'delete_resident' r.id %}"
+                                class="delete-link"
+                                onclick="return confirm('Are you sure you want to delete this resident?');"
+                            >
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-text">No residents found.</p>
+    {% endif %}
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("searchInput");
+        const genderFilter = document.getElementById("genderFilter");
+        const tableRows = document.querySelectorAll("#residentTable tbody tr");
+    
+        function filterTable() {
+            const searchValue = searchInput.value.toLowerCase();
+            const genderValue = genderFilter.value.toLowerCase();
+    
+            tableRows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const genderCell = row.cells[3].innerText.toLowerCase(); // Gender column
+    
+                const matchesSearch = text.includes(searchValue);
+                const matchesGender = genderValue === "" || genderCell.startsWith(genderValue);
+    
+                row.style.display = (matchesSearch && matchesGender) ? "" : "none";
+            });
+        }
+    
+        searchInput.addEventListener("keyup", filterTable);
+        genderFilter.addEventListener("change", filterTable);
+    });
+    </script>
+    
+
+<script src="{% static 'js/script.js' %}" defer></script>
+
+{% endblock %}

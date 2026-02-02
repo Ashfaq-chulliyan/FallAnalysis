@@ -1,0 +1,114 @@
+/* Main Card */
+.resident-card {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Page Title */
+.page-title {
+    color: #0d9488;
+    margin-bottom: 25px;
+    font-size: 2rem;
+}
+
+/* Filters */
+.resident-filters {
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.input {
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid #cbd5e1;
+    font-size: 1rem;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
+}
+
+.search-input {
+    flex: 1;
+}
+
+.gender-filter {
+    min-width: 180px;
+}
+
+/* Table */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.resident-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+/* Table Head */
+.resident-table thead tr {
+    background: #0d9488;
+    color: #ffffff;
+    text-align: center;
+    font-weight: 600;
+}
+
+.resident-table th {
+    padding: 14px 12px;
+}
+
+/* Table Body */
+.resident-table tbody tr {
+    background: #f9fafb;
+    text-align: center;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.resident-table tbody tr:hover {
+    background: #f1f5f9;
+}
+
+.resident-table td {
+    padding: 12px;
+}
+
+/* Health Record Cell */
+.health-cell {
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.muted {
+    color: #64748b;
+}
+
+.no-record {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Delete Link */
+.delete-link {
+    color: #ef4444;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.delete-link:hover {
+    text-decoration: underline;
+}
+
+/* Empty State */
+.empty-text {
+    text-align: center;
+    color: #6b7280;
+    margin-top: 30px;
+}

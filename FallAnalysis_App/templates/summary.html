@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+{% block header %}Home{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/summary.css' %}">
+
+<div class="page-container">
+
+    <!-- Top Stats -->
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <div class="stat-label">Total Residents</div>
+            <div class="stat-value">{{ total_residents }}</div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="stat-label">Fall Incidents</div>
+            <div class="stat-value stat-danger">{{ total_falls }}</div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="stat-label">System Status</div>
+            <div class="stat-value stat-success">{{ risk_level }}</div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Trends -->
+    <div class="section-spacing">
+        <div class="section-header">
+            <h3 class="section-title">Fall Incident Trends</h3>
+            <div>
+                <label for="aggType" class="filter-label">View By:</label>
+                <select id="aggType" class="select-box">
+                    <option value="day" {% if agg_type == 'day' %}selected{% endif %}>Day</option>
+                    <option value="week" {% if agg_type == 'week' %}selected{% endif %}>Week</option>
+                    <option value="month" {% if agg_type == 'month' %}selected{% endif %}>Month</option>
+                    <option value="year" {% if agg_type == 'year' %}selected{% endif %}>Year</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="chart-grid">
+            <div class="dashboard-card">
+                <canvas id="fallTrendChart" class="chart-canvas"></canvas>
+            </div>
+
+            <div class="dashboard-card">
+                <h3 class="card-title">Recent Incidents</h3>
+
+                <div class="recent-activity">
+                    {% for item in recent_residents %}
+                        <div class="activity-item">
+                            <div class="activity-name">{{ item.Resident.Resident_Name }}</div>
+                            <div class="activity-type">{{ item.get_Incident_type_display }}</div>
+                            <div class="activity-time">
+                                {{ item.Incident_time|date:"M d, H:i" }}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="empty-text">No recent incidents.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Risk Prediction -->
+    <div class="dashboard-card section-spacing">
+        <h3 class="card-title">Risk Prediction AI</h3>
+
+        <table class="risk-table">
+            <thead>
+                <tr>
+                    <th>Resident Name</th>
+                    <th>Age</th>
+                    <th>Risk Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in resident_risks %}
+                <tr>
+                    <td class="risk-name">{{ r.name }}</td>
+                    <td>{{ r.age }}</td>
+                    <td>
+                        {% if r.risk == "High Risk" %}
+                            <span class="risk-badge risk-high">Critical</span>
+                        {% elif r.risk == "Medium Risk" %}
+                            <span class="risk-badge risk-medium">Monitor</span>
+                        {% else %}
+                            <span class="risk-badge risk-low">Stable</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Pass data from Django to JS -->
+{{ months|default:"[]"|json_script:"labels-data" }}
+{{ monthly_counts|default:"[]"|json_script:"counts-data" }}
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Read labels & counts from Django
+    const labels = JSON.parse(document.getElementById('labels-data').textContent);
+    const counts = JSON.parse(document.getElementById('counts-data').textContent);
+
+    // Initialize Chart
+    const ctx = document.getElementById('fallTrendChart').getContext('2d');
+    const fallTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Fall Incidents',
+                data: counts,
+                borderColor: '#dc2626',
+                backgroundColor: 'rgba(220,38,38,0.2)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+
+    // Handle aggregation dropdown
+    const aggType = document.getElementById('aggType');
+    aggType.addEventListener('change', () => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('agg_type', aggType.value);
+        window.location.href = url.toString();
+    });
+
+});
+</script>
+
+{% endblock %}

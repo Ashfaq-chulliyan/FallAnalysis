@@ -1,0 +1,161 @@
+/* Page Container */
+.page-container {
+    padding: 30px;
+    background: #f1f5f9;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+/* Dashboard Card */
+.dashboard-card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Stats */
+.stat-label {
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    color: #1e293b;
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+.stat-danger {
+    color: #ef4444;
+}
+
+.stat-success {
+    color: #10b981;
+}
+
+/* Section Header */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    color: #1e293b;
+    margin: 0;
+}
+
+/* Select */
+.select-box {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Chart Layout */
+.chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.chart-canvas {
+    width: 100%;
+    height: 320px;
+}
+
+/* Recent Activity */
+.recent-activity {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 12px;
+}
+
+.activity-name {
+    font-weight: 600;
+    color: #334155;
+}
+
+.activity-type {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.activity-time {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.empty-text {
+    color: #94a3b8;
+}
+
+/* Risk Table */
+.risk-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.risk-table th {
+    padding: 12px;
+    color: #64748b;
+    text-align: left;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.risk-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.risk-name {
+    font-weight: 500;
+}
+
+/* Risk Badges */
+.risk-badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.risk-high {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.risk-medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.risk-low {
+    background: #d1fae5;
+    color: #065f46;
+}

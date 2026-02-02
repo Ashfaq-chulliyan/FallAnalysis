@@ -1,0 +1,233 @@
+/* ================= ROOT (GREEN PALETTE) ================= */
+:root {
+  /* Backgrounds */
+  --bg-main: #f6faf8;                 
+  --bg-sidebar: linear-gradient(
+    180deg,
+    #064e3b,        /* deep emerald */
+    #022c22         /* dark forest */
+  );
+
+  /* Primary Green */
+  --primary: #16a34a;                 /* emerald-600 */
+  --primary-dark: #15803d;            /* emerald-700 */
+  --primary-glow: rgba(22, 163, 74, 0.35);
+
+  /* Text */
+  --text-main: #064e3b;               
+  --text-muted: #6b7280;              /* soft gray */
+
+  /* Radius */
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+}
+
+
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* ================= LAYOUT ================= */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  background: var(--bg-sidebar);
+  padding: 32px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.logo {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+}
+
+.sidebar nav ul li a {
+  display: block;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: #a7f3d0;
+  font-weight: 500;
+  transition: 0.25s ease;
+}
+
+.sidebar nav ul li a:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+/* ================= MAIN ================= */
+.main {
+  flex: 1;
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= HEADER ================= */
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* ================= CONTENT ================= */
+.content {
+  flex: 1;
+}
+
+
+
+/* ================= POPUP ================= */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-card {
+  background: #fff;
+  padding: 30px;
+  width: 360px;
+  max-width: 90%;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  position: relative;
+}
+
+.popup-card h2 {
+  margin-bottom: 12px;
+}
+
+.popup-card p {
+  font-size: 14px;
+}
+
+.popup-actions {
+  margin-top: 20px;
+}
+
+/* ================= BUTTONS ================= */
+.btn-action {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 22px var(--primary-glow);
+  transition: 0.25s ease;
+}
+
+.btn-action.danger {
+  background: #dc2626;
+  box-shadow: 0 8px 20px rgba(220,38,38,0.35);
+}
+
+.btn-action.danger:hover {
+  transform: translateY(-1px);
+  background: #b91c1c;
+}
+
+
+.btn-action:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* ================= CLOSE BUTTON ================= */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ================= UTILS ================= */
+.hidden {
+  display: none;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 90px;
+  }
+
+  .logo,
+  .sidebar nav ul li a {
+    text-align: center;
+    padding: 14px 10px;
+  }
+
+  .sidebar nav ul li a {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar nav ul {
+    display: flex;
+    gap: 8px;
+  }
+
+  .sidebar nav ul li a {
+    margin-bottom: 0;
+  }
+
+  .main {
+    padding: 20px;
+  }
+}
