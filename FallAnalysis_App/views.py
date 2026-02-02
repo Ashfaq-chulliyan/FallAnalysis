@@ -71,7 +71,6 @@ def dashboard(request):
     location_dict = dict(INCIDENT_LOCATION_CHOICES)
     bar_labels = [location_dict.get(x["Incident_location"], x["Incident_location"]) for x in incident_location_counts]
     bar_counts = [x["count"] for x in incident_location_counts]
-
 #------Pie chart--------------
     incident_type_counts = (
         filtered_incidents
@@ -82,8 +81,7 @@ def dashboard(request):
     incident_dict = dict(INCIDENT_CHOICES)
     pie2_labels = [incident_dict.get(x["Incident_type"], x["Incident_type"]) for x in incident_type_counts]
     pie2_counts = [x["count"] for x in incident_type_counts]
-
-#-------Recent Incident----------
+#------Recent Incident----------
     recent_incidents = filtered_incidents.select_related("Resident").order_by("-Incident_time")[:5]
 
     context = {
@@ -94,14 +92,14 @@ def dashboard(request):
         "line_labels": json.dumps(line_labels),
         "line_counts": json.dumps(line_counts),
 
-        "bar_labels": json.dumps(bar_labels), # Now showing locations!
+        "bar_labels": json.dumps(bar_labels), 
         "bar_counts": json.dumps(bar_counts),
 
         "pie2_labels": json.dumps(pie2_labels),
         "pie2_counts": json.dumps(pie2_counts),
 
         "recent_incidents": recent_incidents,
-        "period": period, # To keep the active state on buttons
+        "period": period, 
     }
 
     return render(request, "dashboard.html", context)
@@ -233,5 +231,5 @@ def delete_resident(request, resident_id):
     return redirect("data_entry")
 
 
-#
+
 

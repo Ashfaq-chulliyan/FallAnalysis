@@ -45,7 +45,6 @@ class resident_detail(models.Model):
     Resident_ID = models.PositiveIntegerField(unique=True)
     Resident_Gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     
-    # Dates often cause "Error Occurred" if empty, so we allow null/blank
     Resident_DateOfBirth = models.DateField(null=True, blank=True)
     Resident_AdmissionDate = models.DateField(null=True, blank=True)
     
